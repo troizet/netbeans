@@ -34,10 +34,29 @@ suite('Extension Test Suite', () => {
 
     test('Find clusters', async () => {
         let clusters = myExtension.findClusters('non-existent');
-        assert.strictEqual(clusters.length, 6, 'six clusters found: ' + clusters);
+
+        let found : string[] = [];
+        function assertCluster(name : string) {
+            for (let c of clusters) {
+                if (c.endsWith('/' + name)) {
+                    found.push(c);
+                    return;
+                }
+            }
+            assert.fail(`Cannot find ${name} amongt ${clusters}`);
+        }
+
+        assertCluster('extide');
+        assertCluster('ide');
+        assertCluster('java');
+        assertCluster('nbcode');
+        assertCluster('platform');
+        assertCluster('webcommon');
+        assertCluster('harness');
+
         let nbcode = vscode.extensions.getExtension('asf.apache-netbeans-java');
         assert.ok(nbcode);
-        for (let c of clusters) {
+        for (let c of found) {
             assert.ok(c.startsWith(nbcode.extensionPath), `All extensions are below ${nbcode.extensionPath}, but: ${c}`);
         }
     });
