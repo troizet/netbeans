@@ -21,6 +21,9 @@
 
 -->
 
+## Version 12.2.2
+* Avoid autoupdating existing NetBeans modules
+
 ## Version 12.2.1
 
 * Numerous refactorings for Java source code editing added
