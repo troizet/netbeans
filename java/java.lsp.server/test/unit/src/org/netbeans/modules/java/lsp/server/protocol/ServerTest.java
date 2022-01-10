@@ -4931,6 +4931,7 @@ public class ServerTest extends NbTestCase {
         lc.progressStart.await();
         // let's cancel in the middle
         assertNotNull(lc.token);
+        Thread.sleep(1000);
         server.cancelProgress(new WorkDoneProgressCancelParams(Either.forLeft(lc.token)));
         lc.progressEnd.await();
         
