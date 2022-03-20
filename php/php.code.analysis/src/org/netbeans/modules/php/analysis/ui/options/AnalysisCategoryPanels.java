@@ -41,8 +41,8 @@ public final class AnalysisCategoryPanels {
                 new CodeSnifferOptionsPanel(),
                 new MessDetectorOptionsPanel(),
                 new CodingStandardsFixerOptionsPanel(),
-                new PHPStanOptionsPanel());
-              //  new PsalmOptionsPanel());
+                new PHPStanOptionsPanel(),
+                new PsalmOptionsPanel());
     }
 
 }
