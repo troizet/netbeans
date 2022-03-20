@@ -58,20 +58,14 @@ public final class Psalm {
     private static final String ANALYSE_COMMAND = "analyse"; // NOI18N
 
     // params
-    private static final String CONFIGURATION_PARAM = "--configuration=%s"; // NOI18N
-    private static final String LEVEL_PARAM = "--level=%s"; // NOI18N
+    private static final String CONFIGURATION_PARAM = "--config=%s"; // NOI18N
+   // private static final String LEVEL_PARAM = "--level=%s"; // NOI18N 
     private static final String MEMORY_LIMIT_PARAM = "--memory-limit=%s"; // NOI18N
-    private static final String ERROR_FORMAT_PARAM = "--error-format=checkstyle"; // NOI18N Or json, raw, table
+    private static final String ERROR_FORMAT_PARAM = "--output-format=checkstyle"; // NOI18N 
     private static final String NO_PROGRESS_PARAM = "--no-progress"; // NOI18N
-    private static final String NO_INTERACTION_PARAM = "--no-interaction"; // NOI18N
-    private static final String ANSI_PARAM = "--ansi"; // NOI18N
-    private static final String NO_ANSI_PARAM = "--no-ansi"; // NOI18N
     private static final String VERSION_PARAM = "--version"; // NOI18N
-    private static final String VERBOSE_PARAM = "--verbose"; // NOI18N
     private static final List<String> ANALYZE_DEFAULT_PARAMS = Arrays.asList(
-            NO_ANSI_PARAM,
             NO_PROGRESS_PARAM,
-            NO_INTERACTION_PARAM,
             ERROR_FORMAT_PARAM
     );
 
@@ -99,8 +93,8 @@ public final class Psalm {
     }
 
     @NbBundle.Messages("Psalm.script.label=Psalm")
-    public static String validate(String codeSnifferPath) {
-        return PhpExecutableValidator.validateCommand(codeSnifferPath, Bundle.Psalm_script_label());
+    public static String validate(String psalmPath) {
+        return PhpExecutableValidator.validateCommand(psalmPath, Bundle.Psalm_script_label());
     }
 
     public void startAnalyzeGroup() {
@@ -189,12 +183,12 @@ public final class Psalm {
     private List<String> getParameters(PsalmParams parameters, FileObject file) {
         // analyse /path/to/{dir|file}
         List<String> params = new ArrayList<>();
-        params.add(ANALYSE_COMMAND);
+        //params.add(ANALYSE_COMMAND);
         params.addAll(ANALYZE_DEFAULT_PARAMS);
-        String level = parameters.getLevel();
+       /* String level = parameters.getLevel();
         if (!StringUtils.isEmpty(level)) {
             params.add(String.format(LEVEL_PARAM, level));
-        }
+        }*/
         FileObject configuration = parameters.getConfiguration();
         if (configuration != null) {
             params.add(String.format(CONFIGURATION_PARAM, FileUtil.toFile(configuration).getAbsolutePath()));
