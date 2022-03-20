@@ -34,7 +34,7 @@ import org.netbeans.api.project.FileOwnerQuery;
 import org.netbeans.api.project.Project;
 import org.netbeans.modules.php.analysis.PsalmParams;
 import org.netbeans.modules.php.analysis.options.AnalysisOptions;
-import org.netbeans.modules.php.analysis.parsers.PsalmReportParser;
+import org.netbeans.modules.php.analysis.parsers.CheckStyleReportParser;
 import org.netbeans.modules.php.analysis.results.Result;
 import org.netbeans.modules.php.analysis.ui.options.AnalysisOptionsPanelController;
 import org.netbeans.modules.php.api.executable.InvalidPhpExecutableException;
@@ -117,7 +117,7 @@ public final class Psalm {
                 return null;
             }
 
-            return PsalmReportParser.parse(XML_LOG, file, workDir);
+            return CheckStyleReportParser.parse(XML_LOG, file, workDir);
         } catch (CancellationException ex) {
             // cancelled
             return Collections.emptyList();

@@ -46,12 +46,13 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * Parser for PHPStan xml report file.
+ * Parser for CheckStyle xml report file.
+ * todo: сделать единый класс парсинга формата checkstyle для psalm и phpstan
  */
-public class PHPStanReportParser extends DefaultHandler {
+public class CheckStyleReportParser extends DefaultHandler {
 
     private static final String PHP_EXT = ".php"; // NOI18N
-    private static final Logger LOGGER = Logger.getLogger(PHPStanReportParser.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CheckStyleReportParser.class.getName());
     private final List<Result> results = new ArrayList<>();
     private final XMLReader xmlReader;
 
@@ -61,14 +62,14 @@ public class PHPStanReportParser extends DefaultHandler {
     @NullAllowed
     private final FileObject workDir;
 
-    private PHPStanReportParser(FileObject root, @NullAllowed FileObject workDir) throws SAXException {
+    private CheckStyleReportParser(FileObject root, @NullAllowed FileObject workDir) throws SAXException {
         this.xmlReader = FileUtils.createXmlReader();
         this.root = root;
         this.workDir = workDir;
     }
 
-    private static PHPStanReportParser create(Reader reader, FileObject root, @NullAllowed FileObject workDir) throws SAXException, IOException {
-        PHPStanReportParser parser = new PHPStanReportParser(root, workDir);
+    private static CheckStyleReportParser create(Reader reader, FileObject root, @NullAllowed FileObject workDir) throws SAXException, IOException {
+        CheckStyleReportParser parser = new CheckStyleReportParser(root, workDir);
         parser.xmlReader.setContentHandler(parser);
         parser.xmlReader.parse(new InputSource(reader));
         return parser;
@@ -225,7 +226,7 @@ public class PHPStanReportParser extends DefaultHandler {
     }
 
     private String sanitizeFileName(String fileName) {
-        // e.g. PHPStanSupport/vendor/nette/utils/src/Utils/SmartObject.php (in context of class Nette\Bridges\DITracy\ContainerPanel)
+        // e.g. PsalmSupport/vendor/nette/utils/src/Utils/SmartObject.php (in context of class Nette\Bridges\DITracy\ContainerPanel)
         if (!fileName.endsWith(PHP_EXT)) {
             int lastIndexOfPhpExt = fileName.lastIndexOf(PHP_EXT);
             if (lastIndexOfPhpExt != -1) {

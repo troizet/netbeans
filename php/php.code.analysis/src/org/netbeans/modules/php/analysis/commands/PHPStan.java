@@ -34,7 +34,7 @@ import org.netbeans.api.project.FileOwnerQuery;
 import org.netbeans.api.project.Project;
 import org.netbeans.modules.php.analysis.PHPStanParams;
 import org.netbeans.modules.php.analysis.options.AnalysisOptions;
-import org.netbeans.modules.php.analysis.parsers.PHPStanReportParser;
+import org.netbeans.modules.php.analysis.parsers.CheckStyleReportParser;
 import org.netbeans.modules.php.analysis.results.Result;
 import org.netbeans.modules.php.analysis.ui.options.AnalysisOptionsPanelController;
 import org.netbeans.modules.php.api.executable.InvalidPhpExecutableException;
@@ -98,6 +98,7 @@ public final class PHPStan {
         return new PHPStan(phpStanPath);
     }
 
+    //fixme: опечатка вместо codesnifferPath использовать phpStanPath
     @NbBundle.Messages("PHPStan.script.label=PHPStan")
     public static String validate(String codeSnifferPath) {
         return PhpExecutableValidator.validateCommand(codeSnifferPath, Bundle.PHPStan_script_label());
@@ -123,7 +124,7 @@ public final class PHPStan {
                 return null;
             }
 
-            return PHPStanReportParser.parse(XML_LOG, file, workDir);
+            return CheckStyleReportParser.parse(XML_LOG, file, workDir);
         } catch (CancellationException ex) {
             // cancelled
             return Collections.emptyList();
