@@ -93,6 +93,7 @@ public final class PhpProjectProperties implements ConfigManager.ConfigProvider 
     public static final String PHP_ARGS = "php.arguments"; // NOI18N
     public static final String WORK_DIR = "work.dir"; // NOI18N
     public static final String INTERPRETER = "interpreter"; // NOI18N
+    public static final String PROJECT_INTERPRETER = "project_interpreter"; // NOI18N
     public static final String HOSTNAME = "hostname"; // NOI18N
     public static final String PORT = "port"; // NOI18N
     public static final String ROUTER = "router"; // NOI18N
@@ -127,6 +128,7 @@ public final class PhpProjectProperties implements ConfigManager.ConfigProvider 
         PHP_ARGS,
         WORK_DIR,
         INTERPRETER,
+//        PROJECT_INTERPRETER,
         HOSTNAME,
         PORT,
         ROUTER,
@@ -227,6 +229,7 @@ public final class PhpProjectProperties implements ConfigManager.ConfigProvider 
     private String phpVersion;
     private Set<PhpModuleCustomizerExtender> customizerExtenders;
     private List<String> testingProviders;
+    private String projectInterpreter;
 
     // CustomizerRun
     final Map<String/*|null*/, Map<String, String/*|null*/>/*|null*/> runConfigs;
@@ -349,6 +352,18 @@ public final class PhpProjectProperties implements ConfigManager.ConfigProvider 
         this.browserId = browserId;
     }
 
+    public String getProjectInterpreter() {
+        if (projectInterpreter == null) {
+            projectInterpreter = ProjectPropertiesSupport.getPropertyEvaluator(project).getProperty(PROJECT_INTERPRETER);
+        }
+        
+        return projectInterpreter;
+    }
+    
+    public void setProjectInterpreter(String projectInterpreter) {
+        this.projectInterpreter = projectInterpreter;
+    }
+    
     public String getBrowserReloadOnSave() {
         if (browserReloadOnSave == null) {
             browserReloadOnSave = String.valueOf(ProjectPropertiesSupport.getBrowserReloadOnSave(project));
@@ -698,19 +713,11 @@ public final class PhpProjectProperties implements ConfigManager.ConfigProvider 
         EditableProperties projectProperties = helper.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
         EditableProperties privateProperties = helper.getProperties(AntProjectHelper.PRIVATE_PROPERTIES_PATH);
 
-        // sources
-        if (srcDir != null) {
-            projectProperties.setProperty(SRC_DIR, srcDir);
+        // general
+        if (projectInterpreter != null) {
+            projectProperties.setProperty(PROJECT_INTERPRETER, projectInterpreter);
         }
-        if (copySrcFiles != null) {
-            privateProperties.setProperty(COPY_SRC_FILES, copySrcFiles);
-        }
-        if (copySrcTarget != null) {
-            privateProperties.setProperty(COPY_SRC_TARGET, copySrcTarget);
-        }
-        if (copySrcOnOpen != null) {
-            privateProperties.setProperty(COPY_SRC_ON_OPEN, String.valueOf(copySrcOnOpen));
-        }
+        
         if (encoding != null) {
             projectProperties.setProperty(SOURCE_ENCODING, encoding);
         }

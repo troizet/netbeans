@@ -18,6 +18,7 @@
  */
 package org.netbeans.modules.php.project.ui.customizer;
 
+import java.awt.event.ActionEvent;
 import org.netbeans.spi.project.ui.support.ProjectCustomizer;
 
 /**
@@ -27,12 +28,19 @@ import org.netbeans.spi.project.ui.support.ProjectCustomizer;
 public class CustomizerGeneral extends javax.swing.JPanel implements java.beans.Customizer {
     
     private Object bean;
-
+    private final PhpProjectProperties properties;
+    
+    
     /**
      * Creates new customizer CustomizerGeneral
      */
     public CustomizerGeneral(final ProjectCustomizer.Category category, final PhpProjectProperties properties) {
+        assert category != null;
+        assert properties != null;
+
+        this.properties = properties;        
         initComponents();
+        init();
     }
     
     public void setObject(Object bean) {
@@ -48,15 +56,40 @@ public class CustomizerGeneral extends javax.swing.JPanel implements java.beans.
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        InterpretatorLabel = new javax.swing.JLabel();
+        InterpretatorField = new javax.swing.JTextField();
 
         setLayout(new java.awt.BorderLayout());
 
         jLabel1.setText("General project settings");
         add(jLabel1, java.awt.BorderLayout.PAGE_START);
+
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
+        InterpretatorLabel.setText("Interpretator");
+        jPanel1.add(InterpretatorLabel, new java.awt.GridBagConstraints());
+
+        InterpretatorField.setText("path to interpretator");
+        jPanel1.add(InterpretatorField, new java.awt.GridBagConstraints());
+
+        add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField InterpretatorField;
+    private javax.swing.JLabel InterpretatorLabel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
+    private void init() {
+        InterpretatorField.setText(properties.getProjectInterpreter());
+        
+        InterpretatorField.addActionListener((ActionEvent ae) -> {
+            System.err.println("save to properties: " + InterpretatorField.getText());
+            properties.setProjectInterpreter(InterpretatorField.getText());
+        });
+    }
 }
