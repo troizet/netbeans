@@ -61,6 +61,7 @@ public class CompositePanelProviderImpl implements ProjectCustomizer.CompositeCa
     public static final String SOURCES = "Sources"; // NOI18N
     public static final String RUN = "Run"; // NOI18N
     public static final String BROWSER = "Browser"; // NOI18N
+    public static final String GENERAL = "General"; // NOI18N
     public static final String PHP_INCLUDE_PATH = "PhpIncludePath"; // NOI18N
     public static final String IGNORE_PATH = "IgnorePath"; // NOI18N
     public static final String FRAMEWORKS = "Frameworks"; // NOI18N
@@ -94,6 +95,7 @@ public class CompositePanelProviderImpl implements ProjectCustomizer.CompositeCa
         "CompositePanelProviderImpl.category.browser.title=Browser",
         "CompositePanelProviderImpl.category.annotations.title=Annotations",
         "CompositePanelProviderImpl.category.licenceHeaders.title=License Headers",
+        "CompositePanelProviderImpl.category.general=General",
     })
     @Override
     public ProjectCustomizer.Category createCategory(Lookup context) {
@@ -104,7 +106,13 @@ public class CompositePanelProviderImpl implements ProjectCustomizer.CompositeCa
         PhpProjectProperties uiProps = context.lookup(PhpProjectProperties.class);
         assert uiProps != null;
         assert project == uiProps.getProject() : project + " <> " + uiProps.getProject();
-        if (SOURCES.equals(name)) {
+        if (GENERAL.equals(name)) {
+            toReturn = ProjectCustomizer.Category.create(
+                    GENERAL,
+                    Bundle.CompositePanelProviderImpl_category_general(),
+                    null,
+                    categories);
+        } else if (SOURCES.equals(name)) {
             toReturn = ProjectCustomizer.Category.create(
                     SOURCES,
                     NbBundle.getMessage(CustomizerProviderImpl.class, "LBL_Config_Sources"),
@@ -177,7 +185,9 @@ public class CompositePanelProviderImpl implements ProjectCustomizer.CompositeCa
     public JComponent createComponent(ProjectCustomizer.Category category, Lookup context) {
         String nm = category.getName();
         final PhpProjectProperties uiProps = context.lookup(PhpProjectProperties.class);
-        if (SOURCES.equals(nm)) {
+        if (GENERAL.equals(nm)) {
+            return new CustomizerSources(category, uiProps);
+        } else if (SOURCES.equals(nm)) {
             return new CustomizerSources(category, uiProps);
         } else if (RUN.equals(nm)) {
             return new CustomizerRun(uiProps, category);
@@ -255,6 +265,14 @@ public class CompositePanelProviderImpl implements ProjectCustomizer.CompositeCa
         return new JPanel();
     }
 
+    @ProjectCustomizer.CompositeCategoryProvider.Registration(
+        projectType = UiUtils.CUSTOMIZER_PATH,
+        position = 90
+    )
+    public static CompositePanelProviderImpl createGeneral() {
+        return new CompositePanelProviderImpl(GENERAL);
+    }
+    
     @ProjectCustomizer.CompositeCategoryProvider.Registration(
         projectType = UiUtils.CUSTOMIZER_PATH,
         position = 100
