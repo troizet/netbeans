@@ -186,7 +186,7 @@ public class CompositePanelProviderImpl implements ProjectCustomizer.CompositeCa
         String nm = category.getName();
         final PhpProjectProperties uiProps = context.lookup(PhpProjectProperties.class);
         if (GENERAL.equals(nm)) {
-            return new CustomizerSources(category, uiProps);
+            return new CustomizerGeneral(category, uiProps);
         } else if (SOURCES.equals(nm)) {
             return new CustomizerSources(category, uiProps);
         } else if (RUN.equals(nm)) {
