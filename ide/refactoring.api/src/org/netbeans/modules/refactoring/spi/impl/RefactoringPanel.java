@@ -92,6 +92,7 @@ public class RefactoringPanel extends JPanel implements FiltersManagerImpl.Filte
     private transient JButton cancelButton = null;
     private transient ButtonL buttonListener = null;
     private transient JButton rerunButton = null;
+    private transient JButton previewButton = null;
 
     private final RefactoringUI ui;
     private final boolean isQuery;
@@ -366,6 +367,9 @@ public class RefactoringPanel extends JPanel implements FiltersManagerImpl.Filte
         stopButton.setBorderPainted(false);
         stopButton.addActionListener(getButtonListener());
         
+        previewButton = new JButton(
+            ImageUtilities.loadImageIcon("org/netbeans/modules/refactoring/api/resources/query.gif", false));
+        
         // create toolbar
         JToolBar toolbar = new ToolbarWithOverflow(JToolBar.VERTICAL);
         toolbar.setFloatable(false);
@@ -377,6 +381,7 @@ public class RefactoringPanel extends JPanel implements FiltersManagerImpl.Filte
         toolbar.add(expandButton);
         toolbar.add(logicalViewButton);
         toolbar.add(physicalViewButton);
+        toolbar.add(previewButton);
         if (ui instanceof RefactoringCustomUI) {
             toolbar.add(customViewButton);
         }
