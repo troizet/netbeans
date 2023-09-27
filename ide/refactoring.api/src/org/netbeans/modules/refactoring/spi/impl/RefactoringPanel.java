@@ -367,9 +367,6 @@ public class RefactoringPanel extends JPanel implements FiltersManagerImpl.Filte
         stopButton.setBorderPainted(false);
         stopButton.addActionListener(getButtonListener());
         
-        previewButton = new JButton(
-            ImageUtilities.loadImageIcon("org/netbeans/modules/refactoring/api/resources/query.gif", false));
-        
         // create toolbar
         JToolBar toolbar = new ToolbarWithOverflow(JToolBar.VERTICAL);
         toolbar.setFloatable(false);
@@ -381,7 +378,14 @@ public class RefactoringPanel extends JPanel implements FiltersManagerImpl.Filte
         toolbar.add(expandButton);
         toolbar.add(logicalViewButton);
         toolbar.add(physicalViewButton);
-        toolbar.add(previewButton);
+        
+        if (isQuery) {
+            previewButton = new JButton(
+            ImageUtilities.loadImageIcon("org/netbeans/modules/refactoring/api/resources/query.gif", false));
+            previewButton.addActionListener(getButtonListener());
+            toolbar.add(previewButton);
+        }
+        
         if (ui instanceof RefactoringCustomUI) {
             toolbar.add(customViewButton);
         }
@@ -474,6 +478,10 @@ public class RefactoringPanel extends JPanel implements FiltersManagerImpl.Filte
         expandButton.setEnabled(false);
         refresh(false);
     }
+    
+    void switchToPreview() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }    
     
     private CheckNode createNode(TreeElement representedObject, Map<Object, CheckNode> nodes, CheckNode root) {
         //checkEventThread();
@@ -1071,6 +1079,7 @@ public class RefactoringPanel extends JPanel implements FiltersManagerImpl.Filte
         disableComponent(refreshButton);
         disableComponent(rerunButton);
         disableComponent(stopButton);
+        disableComponent(previewButton);
         disableComponent(tree);
     }
     
@@ -1181,6 +1190,8 @@ public class RefactoringPanel extends JPanel implements FiltersManagerImpl.Filte
                 selectPrevUsage();
             } else if (o == stopButton) {
                 stopSearch();
+            } else if (o == previewButton) {
+                switchToPreview();
             }
         }
 
