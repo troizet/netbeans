@@ -48,6 +48,8 @@ public abstract class Breakpoint {
     public static final String          PROP_VALIDITY = "validity"; // NOI18N
     /** Property name constant. */
     public static final String          PROP_HIT_COUNT_FILTER = "hitCountFilter"; // NOI18N
+    /** Property name for breakpoint description */
+    public static final String          PROP_DESCRIPTION = "description"; // NOI18N
     
     /** Validity values */
     public static enum                  VALIDITY { UNKNOWN, VALID, INVALID }
@@ -66,6 +68,7 @@ public abstract class Breakpoint {
     private HIT_COUNT_FILTERING_STYLE   hitCountFilteringStyle;
     private volatile Set<Breakpoint>    breakpointsToEnable = Collections.emptySet();
     private volatile Set<Breakpoint>    breakpointsToDisable = Collections.emptySet();
+    private String                      description = "";
     
     { pcs = new PropertyChangeSupport (this); }
 
@@ -191,6 +194,21 @@ public abstract class Breakpoint {
         String old = groupName;
         groupName = newGroupName.intern();
         firePropertyChange (PROP_GROUP_NAME, old, newGroupName);
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String newDescription) {
+        if (this.description.equals(newDescription)) return;
+        String old = this.description;
+        this.description = newDescription;
+        firePropertyChange (PROP_DESCRIPTION, old, newDescription);
+    }
+
+    public boolean canSaveDescription() {
+        return false;
     }
 
     /**

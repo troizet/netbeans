@@ -93,4 +93,9 @@ public abstract class AbstractBreakpoint extends Breakpoint {
         myId = null;
     }
 
+    @Override
+    public boolean canSaveDescription() {
+        return true;
+    }
+
 }

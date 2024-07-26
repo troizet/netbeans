@@ -334,7 +334,50 @@ public class BreakpointsActionsProvider implements NodeActionsProvider {
         },
         Models.MULTISELECTION_TYPE_EXACTLY_ONE
     );
-    
+
+    @NbBundle.Messages({
+            "Breakpoint.setDescription.action=Description...",
+            "Breakpoint.setDescriptionDialog.label=description",
+            "Breakpoint.setDescriptionDialog.title=set description"
+    })
+    private static final Action SET_DESCRIPTION_ACTION = Models.createAction (
+        Bundle.Breakpoint_setDescription_action(),
+        new Models.ActionPerformer () {
+            @Override
+            public boolean isEnabled (Object node) {
+                return true;
+            }
+
+            @Override
+            public void perform (Object[] nodes) {
+                NotifyDescriptor.InputLine descriptor = new NotifyDescriptor.InputLine (
+                    Bundle.Breakpoint_setDescriptionDialog_label(),
+                        Bundle.Breakpoint_setDescriptionDialog_title()
+                );
+
+                int j, l = nodes.length;
+                for (j = 0; j < l; j++) {
+                    if (nodes [j] instanceof Breakpoint) {
+                        descriptor.setInputText(((Breakpoint) nodes [j]).getDescription());
+                    }
+                }
+
+                if (DialogDisplayer.getDefault ().notify (descriptor) ==
+                    NotifyDescriptor.OK_OPTION
+                ) {
+                   int i, k = nodes.length;
+                    String description = descriptor.getInputText();
+                    for (i = 0; i < k; i++) {
+                        if (nodes [i] instanceof Breakpoint) {
+                            ((Breakpoint) nodes [i]).setDescription(description);
+                        }
+                    }
+                }
+            }
+        },
+        Models.MULTISELECTION_TYPE_EXACTLY_ONE
+    );
+
     /**
      * @return all breakpoints that are not hidden.
      */
@@ -422,7 +465,8 @@ public class BreakpointsActionsProvider implements NodeActionsProvider {
                     null,
                     DELETE_ACTION,
                     DELETE_ALL_ACTION,
-                    null
+                    null,
+                    ((Breakpoint) node).canSaveDescription() ? SET_DESCRIPTION_ACTION : null
                 };
             } else {
                 return new Action [] {
@@ -436,7 +480,8 @@ public class BreakpointsActionsProvider implements NodeActionsProvider {
                     null,
                     DELETE_ACTION,
                     DELETE_ALL_ACTION,
-                    null
+                    null,
+                    ((Breakpoint) node).canSaveDescription() ? SET_DESCRIPTION_ACTION : null
                 };
             }
         }

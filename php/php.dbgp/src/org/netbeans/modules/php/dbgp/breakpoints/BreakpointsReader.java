@@ -37,6 +37,7 @@ public class BreakpointsReader implements Properties.Reader {
     private static final String EXCEPTION_NAME = "exceptionName"; // NOI18N
     private static final String TYPE = "type"; // NOI18N
     private static final String GROUP_NAME = "groupName"; // NOI18N
+    private static final String PROP_DESCRIPTION = "description"; // NOI18N
     private static final String[] SUPPORTED_CLASS_NAMES =  new String[] {
             LineBreakpoint.class.getName(),
             FunctionBreakpoint.class.getName(),
@@ -60,6 +61,11 @@ public class BreakpointsReader implements Properties.Reader {
                 breakpoint.disable();
             }
             breakpoint.setGroupName(properties.getString(GROUP_NAME, ""));
+            /**
+             * Внимание баг!!!!!
+             * Если был сохранён брейкпоинт до внесения возможности добавления описания, то выскочит исключение
+             */
+            breakpoint.setDescription(properties.getString(LineBreakpoint.PROP_DESCRIPTION, null));
             breakpoint.setCondition(properties.getString(LineBreakpoint.PROP_CONDITION, null));
             return breakpoint;
         } else if (typeID.equals(FunctionBreakpoint.class.getName())) {
@@ -73,6 +79,7 @@ public class BreakpointsReader implements Properties.Reader {
                 breakpoint.disable();
             }
             breakpoint.setGroupName(properties.getString(GROUP_NAME, ""));
+            breakpoint.setDescription(properties.getString(LineBreakpoint.PROP_DESCRIPTION, null));
             return breakpoint;
         } else if (typeID.equals(ExceptionBreakpoint.class.getName())) {
             String exception = properties.getString(EXCEPTION_NAME, null);
@@ -81,6 +88,7 @@ public class BreakpointsReader implements Properties.Reader {
                 breakpoint.disable();
             }
             breakpoint.setGroupName(properties.getString(GROUP_NAME, "")); // NOI18N
+            breakpoint.setDescription(properties.getString(LineBreakpoint.PROP_DESCRIPTION, null));
             return breakpoint;
         } else {
             return null;
@@ -97,6 +105,7 @@ public class BreakpointsReader implements Properties.Reader {
             properties.setBoolean(ENABLED, breakpoint.isEnabled());
             properties.setString(GROUP_NAME, breakpoint.getGroupName());
             properties.setString(LineBreakpoint.PROP_CONDITION, breakpoint.getCondition());
+            properties.setString(PROP_DESCRIPTION, breakpoint.getDescription());
         } else if (object instanceof FunctionBreakpoint) {
             FunctionBreakpoint breakpoint = (FunctionBreakpoint) object;
             String func = breakpoint.getFunction();
