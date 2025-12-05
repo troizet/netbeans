@@ -40,6 +40,7 @@
         <font style="italic"/>
     </fontcolor>
     <fontcolor name="heredocdelimiter" foreColor="6c3d03"/>
+    <fontcolor name="css-embd" bgColor="FFE3F2E1" default="default"/>
     <fontcolor name="number" default="number" foreColor="ff00ff" />
     <fontcolor name="htmltag" default="comment" foreColor="9999FF">
         <font style="bold"/>
